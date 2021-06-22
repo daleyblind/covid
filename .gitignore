@@ -34,3 +34,5 @@ build/
 
 ### test 제외 ###
 /src/test/
+### application.properties 제외 ###
+/src/main/resources/application.properties
