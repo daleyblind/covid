@@ -45,7 +45,6 @@ public class CovidApiScheduler {
         }
     }
 
-//    @Scheduled(fixedDelay = 5000)
     @Scheduled(cron = "0 0 0/2 * * *")
     private void saveCovidInformation() throws IOException {
         URL url = new URL(makeFullUrlString());
@@ -66,38 +65,43 @@ public class CovidApiScheduler {
                 sb.append(line);
             }
             rd.close();
+
             String xmlString = sb.toString();
             CovidInfoVO vo = parsingToObjectFromXmlString(xmlString);
             if (vo == null) {
                 log.info("Covid API 데이터가 아직 준비되지 않았습니다.");
                 return;
             }
-            Covid covid = new Covid();
-            covid.setSeq(vo.getSeq());
-            covid.setStateDt(vo.getStateDt());
-            covid.setStateTime(vo.getStateTime());
-            covid.setDecideCnt(vo.getDecideCnt());
-            covid.setClearCnt(vo.getClearCnt());
-            covid.setExamCnt(vo.getExamCnt());
-            covid.setDeathCnt(vo.getDeathCnt());
-            covid.setCareCnt(vo.getCareCnt());
-            covid.setResultNegCnt(vo.getResutlNegCnt());
-            covid.setAccExamCnt(vo.getAccExamCnt());
-            covid.setAccExamCompCnt(vo.getAccExamCompCnt());
-            covid.setAccDefRate(vo.getAccDefRate());
-            covid.setCreateDt(vo.getCreateDt());
-            covid.setUpdateDt(vo.getUpdateDt());
-            covidRepository.save(covid);
+            saveCovid(vo);
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    private void saveCovid(CovidInfoVO vo) {
+        Covid covid = new Covid();
+        covid.setSeq(vo.getSeq());
+        covid.setStateDt(vo.getStateDt());
+        covid.setStateTime(vo.getStateTime());
+        covid.setDecideCnt(vo.getDecideCnt());
+        covid.setClearCnt(vo.getClearCnt());
+        covid.setExamCnt(vo.getExamCnt());
+        covid.setDeathCnt(vo.getDeathCnt());
+        covid.setCareCnt(vo.getCareCnt());
+        covid.setResultNegCnt(vo.getResutlNegCnt());
+        covid.setAccExamCnt(vo.getAccExamCnt());
+        covid.setAccExamCompCnt(vo.getAccExamCompCnt());
+        covid.setAccDefRate(vo.getAccDefRate());
+        covid.setCreateDt(vo.getCreateDt());
+        covid.setUpdateDt(vo.getUpdateDt());
+        covidRepository.save(covid);
     }
 
     private String makeFullUrlString() {
         String now = LocalDate.now().toString().replace("-", "");   /* ex) 20210622 */
         String queryString = null;
         try {
-            queryString = URLEncoder.encode("20210902", "UTF-8");
+            queryString = URLEncoder.encode(now, "UTF-8");
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }
