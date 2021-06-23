@@ -3,7 +3,7 @@ package com.jh.covid.dashboard.scheduler;
 import com.jh.covid.dashboard.domain.Covid;
 import com.jh.covid.dashboard.parsing.CovidInfoEnum;
 import com.jh.covid.dashboard.repository.CovidRepository;
-import com.jh.covid.dashboard.vo.CovidInfoVO;
+import com.jh.covid.dashboard.vo.CovidXmlTagVO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.java.Log;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -45,7 +45,7 @@ public class CovidApiScheduler {
         }
     }
 
-    @Scheduled(cron = "0 0 0/2 * * *")
+    @Scheduled(cron = "0 0 9-18 * * *")
     private void saveCovidInformation() throws IOException {
         URL url = new URL(makeFullUrlString());
         HttpURLConnection conn = (HttpURLConnection) url.openConnection();
@@ -67,7 +67,7 @@ public class CovidApiScheduler {
             rd.close();
 
             String xmlString = sb.toString();
-            CovidInfoVO vo = parsingToObjectFromXmlString(xmlString);
+            CovidXmlTagVO vo = parsingToObjectFromXmlString(xmlString);
             if (vo == null) {
                 log.info("Covid API 데이터가 아직 준비되지 않았습니다.");
                 return;
@@ -78,7 +78,7 @@ public class CovidApiScheduler {
         }
     }
 
-    private void saveCovid(CovidInfoVO vo) {
+    private void saveCovid(CovidXmlTagVO vo) {
         Covid covid = new Covid();
         covid.setSeq(vo.getSeq());
         covid.setStateDt(vo.getStateDt());
@@ -108,10 +108,10 @@ public class CovidApiScheduler {
         return initPrefix + startDatePrefix + queryString + endDatePrefix + queryString;
     }
 
-    private CovidInfoVO parsingToObjectFromXmlString(String xmlString) {
+    private CovidXmlTagVO parsingToObjectFromXmlString(String xmlString) {
         if (!containsTag(xmlString)) return null;
-        CovidInfoVO vo = new CovidInfoVO();
-        Field[] fields = CovidInfoVO.class.getDeclaredFields();
+        CovidXmlTagVO vo = new CovidXmlTagVO();
+        Field[] fields = CovidXmlTagVO.class.getDeclaredFields();
         Arrays.stream(fields).forEach(f -> {
             String tagName = f.getName();
             String startTag = "<" + tagName + ">";
@@ -119,7 +119,7 @@ public class CovidApiScheduler {
             int startIndex = xmlString.indexOf(startTag);
             int endIndex = xmlString.indexOf(endTag);
             String value = xmlString.substring(startIndex + startTag.length(), endIndex);
-            // XML 데이터를 CovidInfoVO 객체로 파싱
+            // XML 데이터를 객체로 파싱
             CovidInfoEnum.setValueToCovidInfoByTagName(tagName, value, vo);
         });
         return vo;

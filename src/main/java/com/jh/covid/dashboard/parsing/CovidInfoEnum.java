@@ -1,6 +1,6 @@
 package com.jh.covid.dashboard.parsing;
 
-import com.jh.covid.dashboard.vo.CovidInfoVO;
+import com.jh.covid.dashboard.vo.CovidXmlTagVO;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.extern.java.Log;
@@ -32,7 +32,7 @@ public enum CovidInfoEnum implements WordAnalysis {
     private final WordAnalysis wordAnalysis;
 
     @Override
-    public void analysis(String value, CovidInfoVO vo) {
+    public void analysis(String value, CovidXmlTagVO vo) {
         wordAnalysis.analysis(value, vo);
     }
 
@@ -43,7 +43,7 @@ public enum CovidInfoEnum implements WordAnalysis {
                 .orElse(NOT_DEFINE);
     }
 
-    public static void setValueToCovidInfoByTagName(String tagName, String value, CovidInfoVO vo) {
+    public static void setValueToCovidInfoByTagName(String tagName, String value, CovidXmlTagVO vo) {
         if (value.equals("null")) value = null;
         findAnalysis(tagName).analysis(value, vo);
     }

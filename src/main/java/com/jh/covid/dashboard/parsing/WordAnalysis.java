@@ -1,10 +1,10 @@
 package com.jh.covid.dashboard.parsing;
 
-import com.jh.covid.dashboard.vo.CovidInfoVO;
+import com.jh.covid.dashboard.vo.CovidXmlTagVO;
 
 @FunctionalInterface
 public interface WordAnalysis {
 
-    void analysis(String value, CovidInfoVO vo);
+    void analysis(String value, CovidXmlTagVO vo);
 
 }
