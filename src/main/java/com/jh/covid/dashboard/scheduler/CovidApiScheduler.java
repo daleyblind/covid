@@ -1,7 +1,7 @@
 package com.jh.covid.dashboard.scheduler;
 
 import com.jh.covid.dashboard.domain.Covid;
-import com.jh.covid.dashboard.parsing.CovidInfoEnum;
+import com.jh.covid.dashboard.parsing.CovidXmlTagParser;
 import com.jh.covid.dashboard.repository.CovidRepository;
 import com.jh.covid.dashboard.vo.CovidXmlTagVO;
 import lombok.RequiredArgsConstructor;
@@ -19,6 +19,15 @@ import java.net.URL;
 import java.net.URLEncoder;
 import java.time.LocalDate;
 import java.util.Arrays;
+
+/**
+ * 공공데이터 API 의 XML 데이터를 받기 위해 HTTP 통신하는 클래스.
+ * 해당 클래스는 정해진 시간마다 스케줄링.
+ *
+ * @since 1.0
+ * @author Jang Hyun
+ * @version 1.0
+ */
 
 @Log
 @RequiredArgsConstructor
@@ -45,8 +54,15 @@ public class CovidApiScheduler {
         }
     }
 
+    /**
+     * 특정 시간마다 공공데이터 API 통신으로 XML 데이터를 받아오는 메서드.
+     * 데이터는 코로나 관련 정보를 담고 있음. ex) 확진자 수, 자가격리 수 등등
+     *
+     * @throws IOException 공공데이터 API URL 이 연결되지 않으면 발생.
+     * @since 1.0
+     */
     @Scheduled(cron = "0 0 9-18 * * *")
-    private void saveCovidInformation() throws IOException {
+    private void transferCovidAPI() throws IOException {
         URL url = new URL(makeFullUrlString());
         HttpURLConnection conn = (HttpURLConnection) url.openConnection();
         try (AutoCloseable ignored = conn::disconnect) {
@@ -78,6 +94,12 @@ public class CovidApiScheduler {
         }
     }
 
+    /**
+     * 실제 엔티티에 저장하는 메서드.
+     *
+     * @param vo 실제 엔티티에 저장하는 파싱 된 객체.
+     * @since 1.0
+     */
     private void saveCovid(CovidXmlTagVO vo) {
         Covid covid = new Covid();
         covid.setSeq(vo.getSeq());
@@ -97,6 +119,12 @@ public class CovidApiScheduler {
         covidRepository.save(covid);
     }
 
+    /**
+     * 오늘 날짜에 해당하는 쿼리스트링을 만들어 전체 URL 을 완성하는 메서드.
+     *
+     * @return 공공데이터 API 에 통신하는 URL 문자열.
+     * @since 1.0
+     */
     private String makeFullUrlString() {
         String now = LocalDate.now().toString().replace("-", "");   /* ex) 20210622 */
         String queryString = null;
@@ -108,6 +136,13 @@ public class CovidApiScheduler {
         return initPrefix + startDatePrefix + queryString + endDatePrefix + queryString;
     }
 
+    /**
+     * XML 형식의 문자열을 객체로 파싱해주는 메서드.
+     *
+     * @param xmlString XML 형식의 문자열.
+     * @return XML 데이터가 파싱 된 객체.
+     * @since 1.0
+     */
     private CovidXmlTagVO parsingToObjectFromXmlString(String xmlString) {
         if (!containsTag(xmlString)) return null;
         CovidXmlTagVO vo = new CovidXmlTagVO();
@@ -120,11 +155,19 @@ public class CovidApiScheduler {
             int endIndex = xmlString.indexOf(endTag);
             String value = xmlString.substring(startIndex + startTag.length(), endIndex);
             // XML 데이터를 객체로 파싱
-            CovidInfoEnum.setValueToCovidInfoByTagName(tagName, value, vo);
+            CovidXmlTagParser.setValueToCovidInfoByTagName(tagName, value, vo);
         });
         return vo;
     }
 
+    /**
+     * XML 데이터가 존재하면 seq 태그는 무조건 있으므로, 존재하는 지 체크하느 메서드.
+     * (정보 : 데이터가 없으면 seq 태그가 존재하지 않으며, seq 는 해당 데이터의 PK 값을 나타냄.)
+     *
+     * @param xmlString XML 형식의 문자열.
+     * @return seq 라는 태그가 존재하는 지에 대한 조건식.
+     * @since 1.0
+     */
     private boolean containsTag(String xmlString) {
         return xmlString.contains("<seq>");
     }

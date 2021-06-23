@@ -4,6 +4,14 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
+/**
+ * 공공데이터 API 의 태그들을 파싱하기 위한 VO
+ *
+ * @author Jang Hyun
+ * @since 1.0
+ * @version 1.0
+ */
+
 @ToString
 @Getter
 @Setter

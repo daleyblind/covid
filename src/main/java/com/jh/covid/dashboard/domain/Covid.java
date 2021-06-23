@@ -9,6 +9,15 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+/**
+ * tbl_covid 테이블 엔티티.
+ * 공공데이터 API 에서 받은 데이터들로 구성.
+ *
+ * @since 1.0
+ * @author Jang Hyun
+ * @version 1.0
+ */
+
 @Getter @Setter
 @ToString
 @Table(name = "tbl_covid")
