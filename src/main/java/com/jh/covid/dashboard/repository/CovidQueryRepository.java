@@ -1,6 +1,5 @@
 package com.jh.covid.dashboard.repository;
 
-import com.jh.covid.dashboard.domain.Covid;
 import com.jh.covid.dashboard.vo.CovidVO;
 import com.jh.covid.dashboard.vo.QCovidVO;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -16,7 +15,7 @@ import static com.jh.covid.dashboard.domain.QCovid.covid;
  *
  * @author Jang Hyun
  * @version 1.0
- * @since 1.0
+ * @since 1.1
  */
 
 @RequiredArgsConstructor
@@ -29,10 +28,15 @@ public class CovidQueryRepository {
         return Optional.ofNullable(
                 queryFactory.select(new QCovidVO(
                         covid.seq,
+                        covid.stateDt,
                         covid.decideCnt,
                         covid.clearCnt,
+                        covid.examCnt,
                         covid.deathCnt,
-                        covid.stateDt
+                        covid.careCnt,
+                        covid.resultNegCnt,
+                        covid.accExamCnt,
+                        covid.accExamCompCnt
                 ))
                         .from(covid)
                         .where(covid.seq.gt(0))
