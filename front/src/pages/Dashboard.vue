@@ -6,8 +6,8 @@
           <template slot="header">
             <div class="row">
               <div class="col-sm-6" :class="isRTL ? 'text-right' : 'text-left'">
-                <h5 class="card-category">{{$t('dashboard.totalShipments')}}</h5>
-                <h2 class="card-title">{{$t('dashboard.performance')}}</h2>
+                <h5 class="card-category">Today Statistics</h5>
+                <h2 class="card-title">{{todayTitle}}</h2>
               </div>
               <div class="col-sm-6">
                 <div class="btn-group btn-group-toggle"
@@ -15,7 +15,7 @@
                      data-toggle="buttons">
                   <label v-for="(option, index) in bigLineChartCategories"
                          :key="option"
-                         class="btn btn-sm btn-primary btn-simple"
+                         class="btn btn-sm btn-primary btn-danger"
                          :class="{active: bigLineChart.activeIndex === index}"
                          :id="index">
                     <input type="radio"
@@ -45,16 +45,18 @@
       <div class="col-lg-4" :class="{'text-right': isRTL}">
         <card type="chart">
           <template slot="header">
-            <h5 class="card-category">확진자</h5>
-            <h3 class="card-title"><i class="tim-icons icon-bell-55 text-warning "></i> {{covid.decideCnt}}</h3>
+            <h5 class="card-category">누적 확진자</h5>
+            <h3 class="card-title"><i class="tim-icons icon-volume-98 text-warning"></i>
+              {{covid.decideCnt | makeComma}} <span class="text-warning">▲{{dailyDecideCnt | makeComma}}</span>
+            </h3>
           </template>
           <div class="chart-area">
             <line-chart style="height: 100%"
                         chart-id="purple-line-chart"
-                        :chart-data="greenLineChart.chartData"
-                        :gradient-colors="greenLineChart.gradientColors"
-                        :gradient-stops="greenLineChart.gradientStops"
-                        :extra-options="greenLineChart.extraOptions">
+                        :chart-data="decideChart.chartData"
+                        :gradient-colors="decideChart.gradientColors"
+                        :gradient-stops="decideChart.gradientStops"
+                        :extra-options="decideChart.extraOptions">
             </line-chart>
           </div>
         </card>
@@ -62,16 +64,18 @@
       <div class="col-lg-4" :class="{'text-right': isRTL}">
         <card type="chart">
           <template slot="header">
-            <h5 class="card-category">격리해제</h5>
-            <h3 class="card-title"><i class="tim-icons icon-send text-success"></i> {{covid.clearCnt}}</h3>
+            <h5 class="card-category">누적 격리해제</h5>
+            <h3 class="card-title"><i class="tim-icons icon-send text-success"></i>
+              {{covid.clearCnt | makeComma}} <span class="text-success">▲{{dailyClearCnt | makeComma}}</span>
+            </h3>
           </template>
           <div class="chart-area">
             <line-chart style="height: 100%"
                         chart-id="green-line-chart"
-                        :chart-data="purpleLineChart.chartData"
-                        :gradient-colors="purpleLineChart.gradientColors"
-                        :gradient-stops="purpleLineChart.gradientStops"
-                        :extra-options="purpleLineChart.extraOptions">
+                        :chart-data="clearChart.chartData"
+                        :gradient-colors="clearChart.gradientColors"
+                        :gradient-stops="clearChart.gradientStops"
+                        :extra-options="clearChart.extraOptions">
             </line-chart>
           </div>
         </card>
@@ -79,16 +83,18 @@
       <div class="col-lg-4" :class="{'text-right': isRTL}">
         <card type="chart">
           <template slot="header">
-            <h5 class="card-category">사망자</h5>
-            <h3 class="card-title"><i class="tim-icons icon-alert-circle-exc text-danger"></i> {{covid.deathCnt}}</h3>
+            <h5 class="card-category">누적 사망자</h5>
+            <h3 class="card-title"><i class="tim-icons icon-alert-circle-exc text-danger"></i>
+              {{covid.deathCnt | makeComma}} <span class="text-danger">▲{{dailyDeathCnt | makeComma}}</span>
+            </h3>
           </template>
           <div class="chart-area">
             <line-chart style="height: 100%"
                         chart-id="red-line-chart"
-                        :chart-data="greenLineChart.chartData"
-                        :gradient-colors="greenLineChart.gradientColors"
-                        :gradient-stops="greenLineChart.gradientStops"
-                        :extra-options="greenLineChart.extraOptions">
+                        :chart-data="deathChart.chartData"
+                        :gradient-colors="deathChart.gradientColors"
+                        :gradient-stops="deathChart.gradientStops"
+                        :extra-options="deathChart.extraOptions">
             </line-chart>
           </div>
         </card>
@@ -118,78 +124,74 @@
 import LineChart from '@/components/Charts/LineChart';
 import BarChart from '@/components/Charts/BarChart';
 import * as chartConfigs from '@/components/Charts/config';
-import TaskList from './Dashboard/TaskList';
-import UserTable from './Dashboard/UserTable';
 import config from '@/config';
 
 export default {
     components: {
       LineChart,
-      BarChart,
-      TaskList,
-      UserTable
+      BarChart
     },
     data() {
       return {
         bigLineChart: {
           allData: [
-            [100, 70, 90, 70, 85, 60, 75, 60, 90, 80, 110, 100],
-            [80, 120, 105, 110, 95, 105, 90, 100, 80, 95, 70, 120],
-            [60, 80, 65, 130, 80, 105, 90, 130, 70, 115, 60, 130]
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
           ],
           activeIndex: 0,
           chartData: {
             datasets: [{ }],
-            labels: ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'],
+            labels: ['', '', '', '', '', '', '', '', '', '', '', ''],
           },
           extraOptions: chartConfigs.purpleChartOptions,
           gradientColors: config.colors.primaryGradient,
           gradientStops: [1, 0.4, 0],
           categories: []
         },
-        purpleLineChart: {
-          extraOptions: chartConfigs.purpleChartOptions,
+        clearChart: {
+          extraOptions: chartConfigs.blueChartOptions,
           chartData: {
-            labels: ['JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'],
+            labels: ['', '', '', '', '', ''],
             datasets: [{
-              label: "Data",
+              label: "count",
               fill: true,
-              borderColor: config.colors.primary,
+              borderColor: config.colors.teal,
               borderWidth: 2,
               borderDash: [],
               borderDashOffset: 0.0,
-              pointBackgroundColor: config.colors.primary,
+              pointBackgroundColor: config.colors.teal,
               pointBorderColor: 'rgba(255,255,255,0)',
-              pointHoverBackgroundColor: config.colors.primary,
+              pointHoverBackgroundColor: config.colors.teal,
               pointBorderWidth: 20,
               pointHoverRadius: 4,
               pointHoverBorderWidth: 15,
               pointRadius: 4,
-              data: [80, 100, 70, 80, 120, 80],
+              data: [0, 0, 0, 0, 0, 0],
             }]
           },
           gradientColors: config.colors.primaryGradient,
           gradientStops: [1, 0.2, 0],
         },
-        greenLineChart: {
-          extraOptions: chartConfigs.greenChartOptions,
+        decideChart: {
+          extraOptions: chartConfigs.orangeChartOptions,
           chartData: {
-            labels: ['JUL', 'AUG', 'SEP', 'OCT', 'NOV'],
+            labels: ['', '', '', '', ''],
             datasets: [{
               label: "count",
               fill: true,
-              borderColor: config.colors.danger,
+              borderColor: config.colors.warn,
               borderWidth: 2,
               borderDash: [],
               borderDashOffset: 0.0,
-              pointBackgroundColor: config.colors.danger,
+              pointBackgroundColor: config.colors.warn,
               pointBorderColor: 'rgba(255,255,255,0)',
-              pointHoverBackgroundColor: config.colors.danger,
+              pointHoverBackgroundColor: config.colors.warn,
               pointBorderWidth: 20,
               pointHoverRadius: 4,
               pointHoverBorderWidth: 15,
               pointRadius: 4,
-              data: [90, 27, 60, 12, 80],
+              data: [0, 0, 0, 0, 0],
             }]
           },
           gradientColors: ['rgba(255,134,121,0.3)', 'rgba(66,134,121,0.0)', 'rgba(66,134,121,0)'],
@@ -212,6 +214,28 @@ export default {
           gradientColors: config.colors.primaryGradient,
           gradientStops: [1, 0.4, 0],
         },
+        deathChart: {
+          extraOptions: chartConfigs.greenChartOptions,
+          chartData: {
+            labels: ['', '', '', '', ''],
+            datasets: [{
+              label: "count",
+              fill: true,
+              borderColor: config.colors.danger,
+              borderWidth: 2,
+              borderDash: [],
+              borderDashOffset: 0.0,
+              pointBackgroundColor: config.colors.danger,
+              pointBorderColor: 'rgba(255,255,255,0)',
+              pointHoverBackgroundColor: config.colors.danger,
+              pointBorderWidth: 20,
+              pointHoverRadius: 4,
+              pointHoverBorderWidth: 15,
+              pointRadius: 4,
+              data: [0, 0, 0, 0, 0],
+            }]
+          }
+        },
         covid: {
           seq: 0,
           stateDt: "20210101",
@@ -224,6 +248,10 @@ export default {
           accExamCnt: 0,
           accExamCompCnt: 0,
         },
+        todayTitle: '',
+        dailyDecideCnt: 0,
+        dailyClearCnt: 0,
+        dailyDeathCnt: 0,
       }
     },
     computed: {
@@ -234,43 +262,81 @@ export default {
         return this.$rtl.isRTL;
       },
       bigLineChartCategories() {
-        return this.$t('dashboard.chartCategories');
+        return ['확진자', '격리해제', '사망자'];
       }
     },
     methods: {
       initBigChart(index) {
+        let color;
+        if (index === 0) {
+          this.todayTitle = '일일 확진자'
+          color = config.colors.warn;
+        } else if (index === 1) {
+          this.todayTitle = '일일 격리해제'
+          color = config.colors.teal;
+        } else {
+          this.todayTitle = '일일 사망자'
+          color = config.colors.danger;
+        }
         let chartData = {
           datasets: [{
             fill: true,
-            borderColor: config.colors.primary,
+            borderColor: color,
             borderWidth: 2,
             borderDash: [],
             borderDashOffset: 0.0,
-            pointBackgroundColor: config.colors.primary,
+            pointBackgroundColor: color,
             pointBorderColor: 'rgba(255,255,255,0)',
-            pointHoverBackgroundColor: config.colors.primary,
+            pointHoverBackgroundColor: color,
             pointBorderWidth: 20,
             pointHoverRadius: 4,
             pointHoverBorderWidth: 15,
             pointRadius: 4,
             data: this.bigLineChart.allData[index]
           }],
-          labels: ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'],
         }
         this.$refs.bigChart.updateGradients(chartData);
         this.bigLineChart.chartData = chartData;
         this.bigLineChart.activeIndex = index;
       },
       async showCovidList() {
-        let obj = {};
+        let covidArray = {};
         await this.$api("http://localhost:8080/api/dashboard", "get").then(function (data) {
-          obj = data;
+          covidArray = data;
         });
-        this.covid = obj;
+        this.covid = covidArray[0];
+        const result = covidArray.sort((a, b) => {
+          let first = a.seq;
+          let second = b.seq;
+          if (first > second) return 1;
+          else if (first === second) return 0;
+          else return -1;
+        });
+        this.drawBlueChart(covidArray[0]);
+        this.drawDecideChart(result);
+        this.drawClearChart(result);
+        this.drawDeathChart(result);
+        let bigChartArray = [];
+        let dailyDecideArray = this.calculateDaily(result.map(v => v.decideCnt));
+        let dailyClearArray = this.calculateDaily(result.map(v => v.clearCnt));
+        let dailyDeathArray = this.calculateDaily(result.map(v => v.deathCnt));
+        this.dailyDecideCnt = dailyDecideArray[dailyDecideArray.length - 1];
+        this.dailyClearCnt = dailyClearArray[dailyClearArray.length - 1];
+        this.dailyDeathCnt = dailyDeathArray[dailyDeathArray.length - 1];
+        bigChartArray.push(dailyDecideArray);
+        bigChartArray.push(dailyClearArray);
+        bigChartArray.push(dailyDeathArray);
+        this.bigLineChart.allData = bigChartArray;
+        let labels = result.map(v => this.formatDate(v.stateDt));
+        labels.shift();
+        this.bigLineChart.chartData.labels = labels;
+        this.initBigChart(0);
+      },
+      drawBlueChart(obj) {
         this.blueBarChart = {
           extraOptions: chartConfigs.barChartOptions,
           chartData: {
-            labels: ['누적 검사 수', '누적 검사 완료 수', '검사 진행 수', '결과 음성 수', '확진자 수', '치료 중 환자 수'],
+            labels: ['누적 검사', '누적 검사 완료', '검사 진행', '결과 음성', '확진자', '치료 중 환자'],
             datasets: [{
               label: "count",
               fill: true,
@@ -285,17 +351,110 @@ export default {
           gradientStops: [1, 0.4, 0],
         }
       },
+      drawDecideChart(arr) {
+        let labels = arr.map(v => this.formatDate(v.stateDt));
+        let data = arr.map(v => v.decideCnt);
+        this.decideChart = {
+          extraOptions: chartConfigs.orangeChartOptions,
+          chartData: {
+            labels: labels,
+            datasets: [{
+              label: "count",
+              fill: true,
+              borderColor: config.colors.warn,
+              borderWidth: 2,
+              borderDash: [],
+              borderDashOffset: 0.0,
+              pointBackgroundColor: config.colors.warn,
+              pointBorderColor: 'rgba(255,255,255,0)',
+              pointHoverBackgroundColor: config.colors.warn,
+              pointBorderWidth: 20,
+              pointHoverRadius: 4,
+              pointHoverBorderWidth: 15,
+              pointRadius: 4,
+              data: data,
+            }]
+          },
+          gradientColors: ['rgba(255,134,121,0.3)', 'rgba(66,134,121,0.0)', 'rgba(66,134,121,0)'],
+          gradientStops: [1, 0.4, 0],
+        }
+        this.decideChart.extraOptions.scales.yAxes[0].ticks.suggestedMin = data[0];
+        this.decideChart.extraOptions.scales.yAxes[0].ticks.suggestedMax = data[data.length - 1];
+      },
+      drawClearChart(arr) {
+        let labels = arr.map(v =>this.formatDate(v.stateDt));
+        let data = arr.map(v => v.clearCnt);
+        this.clearChart = {
+          extraOptions: chartConfigs.blueChartOptions,
+          chartData: {
+            labels: labels,
+            datasets: [{
+              label: "count",
+              fill: true,
+              borderColor: config.colors.teal,
+              borderWidth: 2,
+              borderDash: [],
+              borderDashOffset: 0.0,
+              pointBackgroundColor: config.colors.teal,
+              pointBorderColor: 'rgba(255,255,255,0)',
+              pointHoverBackgroundColor: config.colors.teal,
+              pointBorderWidth: 20,
+              pointHoverRadius: 4,
+              pointHoverBorderWidth: 15,
+              pointRadius: 4,
+              data: data,
+            }]
+          }
+        };
+        this.clearChart.extraOptions.scales.yAxes[0].ticks.suggestedMin = data[0];
+        this.clearChart.extraOptions.scales.yAxes[0].ticks.suggestedMax = data[data.length - 1];
+      },
+      drawDeathChart(arr) {
+        let labels = arr.map(v => this.formatDate(v.stateDt));
+        let data = arr.map(v => v.deathCnt);
+        this.deathChart = {
+          extraOptions: chartConfigs.greenChartOptions,
+            chartData: {
+            labels: labels,
+              datasets: [{
+              label: "count",
+              fill: true,
+              borderColor: config.colors.danger,
+              borderWidth: 2,
+              borderDash: [],
+              borderDashOffset: 0.0,
+              pointBackgroundColor: config.colors.danger,
+              pointBorderColor: 'rgba(255,255,255,0)',
+              pointHoverBackgroundColor: config.colors.danger,
+              pointBorderWidth: 20,
+              pointHoverRadius: 4,
+              pointHoverBorderWidth: 15,
+              pointRadius: 4,
+              data: data,
+            }]
+          }
+        }
+        this.deathChart.extraOptions.scales.yAxes[0].ticks.suggestedMin = data[0];
+        this.deathChart.extraOptions.scales.yAxes[0].ticks.suggestedMax = data[data.length - 1];
+      },
+      formatDate(value) {
+        let date = '';
+        if (value.length === 8) {
+          date = value.slice(4).replace(/(.{2})/g, '$1/').replace(/\/$/, '');
+        }
+        return date;
+      },
+      calculateDaily(arr) {
+        let result = [];
+        for (let i = 0; i < arr.length; i++) {
+          if (i === arr.length - 1) break;
+          result.push(arr[i + 1] - arr[i]);
+        }
+        return result;
+      }
     },
     created() {
       this.showCovidList();
-    },
-    mounted() {
-      this.i18n = this.$i18n;
-      if (this.enableRTL) {
-        this.i18n.locale = 'ar';
-        this.$rtl.enableRTL();
-      }
-      this.initBigChart(0);
     },
     beforeDestroy() {
       if (this.$rtl.isRTL) {

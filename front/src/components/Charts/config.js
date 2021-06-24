@@ -23,14 +23,12 @@ export let blueChartOptions = {
       barPercentage: 1.6,
       gridLines: {
         drawBorder: false,
-        color: 'rgba(29,140,248,0.0)',
+        color: 'rgba(29,140,248,0.1)',
         zeroLineColor: "transparent",
       },
       ticks: {
-        suggestedMin: 60,
-        suggestedMax: 125,
         padding: 20,
-        fontColor: "#2380f7"
+        fontColor: "#9e9e9e"
       }
     }],
 
@@ -38,12 +36,12 @@ export let blueChartOptions = {
       barPercentage: 1.6,
       gridLines: {
         drawBorder: false,
-        color: 'rgba(29,140,248,0.1)',
+        color: 'rgba(0,242,195,0.1)',
         zeroLineColor: "transparent",
       },
       ticks: {
         padding: 20,
-        fontColor: "#2380f7"
+        fontColor: "#9e9e9e"
       }
     }]
   }
@@ -109,14 +107,12 @@ export let orangeChartOptions = {
       barPercentage: 1.6,
       gridLines: {
         drawBorder: false,
-        color: 'rgba(29,140,248,0.0)',
+        color: 'rgba(29,140,248,0.1)',
         zeroLineColor: "transparent",
       },
       ticks: {
-        suggestedMin: 50,
-        suggestedMax: 110,
         padding: 20,
-        fontColor: "#ff8a76"
+        fontColor: "#9e9e9e"
       }
     }],
 
@@ -124,16 +120,15 @@ export let orangeChartOptions = {
       barPercentage: 1.6,
       gridLines: {
         drawBorder: false,
-        color: 'rgba(220,53,69,0.1)',
+        color: 'rgba(0,242,195,0.1)',
         zeroLineColor: "transparent",
       },
       ticks: {
         padding: 20,
-        fontColor: "#ff8a76"
+        fontColor: "#9e9e9e"
       }
     }]
   }
-
 }
 export let greenChartOptions = {
   ...basicOptions,
@@ -156,8 +151,6 @@ export let greenChartOptions = {
         zeroLineColor: "transparent",
       },
       ticks: {
-        suggestedMin: 50,
-        suggestedMax: 125,
         padding: 20,
         fontColor: "#9e9e9e"
       }
@@ -199,14 +192,11 @@ export let barChartOptions = {
         zeroLineColor: "transparent",
       },
       ticks: {
-        suggestedMin: 60,
-        suggestedMax: 120,
         padding: 20,
         fontColor: "#9e9e9e"
       }
     }],
     xAxes: [{
-
       gridLines: {
         drawBorder: false,
         color: 'rgba(29,140,248,0.1)',
@@ -218,5 +208,4 @@ export let barChartOptions = {
       }
     }]
   }
-
 }

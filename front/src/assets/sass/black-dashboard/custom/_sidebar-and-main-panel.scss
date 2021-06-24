@@ -291,7 +291,7 @@
           height: 32px;
           margin-left: 0;
           margin-right: 15px;
-          background: #fff;
+          background: tomato;
           border-radius: 32px;
           text-align: center;
           img {
@@ -460,7 +460,7 @@
     float: right;
     width: $full-width;
     min-height: 100vh;
-    border-top: 2px solid $primary;
+    border-top: 2px solid #32325d;
     background: linear-gradient($background-black, $background-states-black);
 
     @include transitions (0.50s, cubic-bezier(0.685, 0.0473, 0.346, 1));
