@@ -27,6 +27,10 @@ Vue.use(VueRouter);
 Vue.use(RouterPrefetch);
 Vue.mixin(mixins);
 
+Vue.filter("makeComma", val =>{
+  return String(val).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+});
+
 /* eslint-disable no-new */
 new Vue({
   router,
