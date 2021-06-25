@@ -1,22 +1,11 @@
 <template>
     <div class="row">
       <div class="col-12">
-        <card :title="table1.title">
+        <card :title="bullet.title">
           <div class="table-responsive">
-            <base-table :data="table1.data"
-                        :columns="table1.columns"
+            <base-table :data="bullet.data"
+                        :columns="bullet.columns"
                         thead-classes="text-primary">
-            </base-table>
-          </div>
-        </card>
-      </div>
-
-      <div class="col-12">
-        <card class="card-plain">
-          <div class="table-full-width table-responsive">
-            <base-table :title="table2.title" :sub-title="table2.subTitle" :data="table2.data"
-                         :columns="table2.columns">
-
             </base-table>
           </div>
         </card>
@@ -26,56 +15,56 @@
 </template>
 <script>
 import { BaseTable } from "@/components";
-const tableColumns = ["Name", "Country", "City", "Salary"];
+const tableColumns = ["no", "title", "writer", "create", "update"];
 const tableData = [
   {
-    id: 1,
-    name: "Dakota Rice",
-    salary: "$36.738",
-    country: "Niger",
-    city: "Oud-Turnhout",
+    no: 1,
+    title: "Oud-Turnhout",
+    writer: "Dakota Rice",
+    create: "$36.738",
+    update: "Niger",
   },
   {
-    id: 2,
-    name: "Minerva Hooper",
-    salary: "$23,789",
-    country: "Curaçao",
-    city: "Sinaai-Waas"
+    no: 2,
+    title: "Sinaai-Waas",
+    writer: "Minerva Hooper",
+    create: "$23,789",
+    update: "Curaçao",
   },
   {
-    id: 3,
-    name: "Sage Rodriguez",
-    salary: "$56,142",
-    country: "Netherlands",
-    city: "Baileux"
+    no: 3,
+    title: "Baileux",
+    writer: "Sage Rodriguez",
+    create: "$56,142",
+    update: "Netherlands",
   },
   {
-    id: 4,
-    name: "Philip Chaney",
-    salary: "$38,735",
-    country: "Korea, South",
-    city: "Overland Park"
+    no: 4,
+    title: "Overland Park",
+    writer: "Philip Chaney",
+    create: "$38,735",
+    update: "Korea, South",
   },
   {
-    id: 5,
-    name: "Doris Greene",
-    salary: "$63,542",
-    country: "Malawi",
-    city: "Feldkirchen in Kärnten"
+    no: 5,
+    title: "Feldkirchen in Kärnten",
+    writer: "Doris Greene",
+    create: "$63,542",
+    update: "Malawi",
   },
   {
-    id: 6,
-    name: 'Mason Porter',
-    salary: '$98,615',
-    country: 'Chile',
-    city: 'Gloucester'
+    no: 6,
+    title: 'Gloucester',
+    writer: 'Mason Porter',
+    create: '$98,615',
+    update: 'Chile',
   },
   {
-    id: 7,
-    name: 'Jon Porter',
-    salary: '$78,615',
-    country: 'Portugal',
-    city: 'Gloucester'
+    no: 7,
+    title: 'Gloucester',
+    writer: 'Jon Porter',
+    create: '$78,615',
+    update: 'Portugal',
   }
 ];
 
@@ -85,19 +74,17 @@ export default {
   },
   data() {
     return {
-      table1: {
-        title: "Simple Table",
+      bullet: {
+        title: "건의 게시판",
         columns: [...tableColumns],
         data: [...tableData]
       },
-      table2: {
-        title: "Table on Plain Background",
-        columns: [...tableColumns],
-        data: [...tableData]
-      }
     };
   }
 };
 </script>
 <style>
+.table-responsive {
+  overflow: hidden;
+}
 </style>
