@@ -112,8 +112,6 @@
   },
   "sidebar": {
     "dashboard": "dashboard",
-    "icons": "Icons",
-    "notifications": "Notifications",
     "tableList": "COVID-19 정보",
     "bullet": "건의 게시판",
     "profile": "개발자 프로필"

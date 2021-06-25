@@ -3,8 +3,6 @@
     <side-bar>
       <template slot="links">
         <sidebar-link to="/dashboard" :name="$t('sidebar.dashboard')" icon="tim-icons icon-chart-bar-32"/>
-        <sidebar-link to="/icons" :name="$t('sidebar.icons')" icon="tim-icons icon-bullet-list-67"/>
-        <sidebar-link to="/notifications" :name="$t('sidebar.notifications')" icon="tim-icons icon-bell-55"/>
         <sidebar-link to="/covid_info" :name="$t('sidebar.tableList')" icon="tim-icons icon-book-bookmark"/>
         <sidebar-link to="/bullet" :name="$t('sidebar.bullet')" icon="tim-icons icon-bullet-list-67"/>
         <sidebar-link to="/profile" :name="$t('sidebar.profile')" icon="tim-icons icon-single-02"/>

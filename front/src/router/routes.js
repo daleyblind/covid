@@ -4,11 +4,9 @@ import NotFound from "@/pages/NotFoundPage.vue";
 
 // Admin pages
 const Dashboard = () => import(/* webpackChunkName: "dashboard" */"@/pages/Dashboard.vue");
-const Profile = () => import(/* webpackChunkName: "common" */ "@/pages/Profile.vue");
-const Notifications = () => import(/* webpackChunkName: "common" */"@/pages/Notifications.vue");
-const Icons = () => import(/* webpackChunkName: "common" */ "@/pages/Icons.vue");
 const Typography = () => import(/* webpackChunkName: "common" */ "@/pages/Typography.vue");
 const TableList = () => import(/* webpackChunkName: "common" */ "@/pages/TableList.vue");
+const Profile = () => import(/* webpackChunkName: "common" */ "@/pages/Profile.vue");
 
 const routes = [
   {
@@ -20,16 +18,6 @@ const routes = [
         path: "dashboard",
         name: "dashboard",
         component: Dashboard
-      },
-      {
-        path: "notifications",
-        name: "notifications",
-        component: Notifications
-      },
-      {
-        path: "icons",
-        name: "icons",
-        component: Icons
       },
       {
         path: "covid_info",
