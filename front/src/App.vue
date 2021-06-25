@@ -20,7 +20,8 @@
     },
     mounted() {
       this.$watch('$route', this.disableRTL, { immediate: true });
-      this.$watch('$sidebar.showSidebar', this.toggleNavOpen)
+      this.$watch('$sidebar.showSidebar', this.toggleNavOpen);
+      document.title = 'COVID-19 ALERTS';
     }
   };
 </script>
