@@ -111,15 +111,11 @@
     ]
   },
   "sidebar": {
-    "title": "Creative Tim",
-    "shortTitle": "CT",
     "dashboard": "dashboard",
     "icons": "Icons",
-    "maps": "Maps",
     "notifications": "Notifications",
-    "userProfile": "User Profile",
-    "tableList": "Table List",
-    "typography": "Typography",
-    "rtlSupport": "RTL Support"
+    "tableList": "COVID-19 정보",
+    "bullet": "건의 게시판",
+    "profile": "개발자 프로필"
   }
 }

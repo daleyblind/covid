@@ -7,27 +7,21 @@
       <div class="block block-two"></div>
       <div class="block block-three"></div>
       <div class="block block-four"></div>
-      <a href="#">
-        <img class="avatar" src="img/anime6.png" alt="...">
+      <div>
+        <img class="avatar" src="img/anime3.png" alt="...">
         <h5 class="title">{{user.fullName}}</h5>
-      </a>
+      </div>
       <p class="description">
         {{user.title}}
       </p>
     </div>
     <p></p>
-    <p class="card-description">
+    <pre class="card-description">
       {{user.description}}
-    </p>
+    </pre>
     <div slot="footer" class="button-container">
-      <base-button icon round class="btn-facebook">
-        <i class="fab fa-facebook"></i>
-      </base-button>
-      <base-button icon round class="btn-twitter">
-        <i class="fab fa-twitter"></i>
-      </base-button>
-      <base-button icon round class="btn-google">
-        <i class="fab fa-google-plus"></i>
+      <base-button icon round class="btn-github" @click="openGithub">
+        <i class="fab fa-github"></i>
       </base-button>
     </div>
   </card>
@@ -41,8 +35,17 @@
           return {};
         }
       }
-    }
+    },
+    methods: {
+      openGithub() {
+        window.open('https://github.com/daleyblind/covid');
+      },
+    },
   }
 </script>
 <style>
+.card-description {
+  text-align: center;
+  font-size: 1rem;
+}
 </style>

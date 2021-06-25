@@ -313,9 +313,15 @@ export default {
           else return -1;
         });
         this.drawBlueChart(covidArray[0]);
-        this.drawDecideChart(result);
-        this.drawClearChart(result);
-        this.drawDeathChart(result);
+        let accArray = [];
+        if (result.length > 5) {
+          accArray = result.slice(result.length - 5);
+        } else {
+          accArray = result;
+        }
+        this.drawDecideChart(accArray);
+        this.drawClearChart(accArray);
+        this.drawDeathChart(accArray);
         let bigChartArray = [];
         let dailyDecideArray = this.calculateDaily(result.map(v => v.decideCnt));
         let dailyClearArray = this.calculateDaily(result.map(v => v.clearCnt));

@@ -40,7 +40,7 @@ public class CovidQueryRepository {
                 .from(covid)
                 .where(covid.seq.gt(0))
                 .orderBy(covid.seq.desc())
-                .limit(5)
+                .limit(11)
                 .fetch();
     }
 

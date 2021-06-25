@@ -27,6 +27,7 @@ export let blueChartOptions = {
         zeroLineColor: "transparent",
       },
       ticks: {
+        stepSize: 500,
         padding: 20,
         fontColor: "#9e9e9e"
       }
@@ -111,6 +112,7 @@ export let orangeChartOptions = {
         zeroLineColor: "transparent",
       },
       ticks: {
+        stepSize: 500,
         padding: 20,
         fontColor: "#9e9e9e"
       }
@@ -151,6 +153,7 @@ export let greenChartOptions = {
         zeroLineColor: "transparent",
       },
       ticks: {
+        stepSize: 1,
         padding: 20,
         fontColor: "#9e9e9e"
       }

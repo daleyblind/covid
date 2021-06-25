@@ -22,11 +22,6 @@ const routes = [
         component: Dashboard
       },
       {
-        path: "profile",
-        name: "profile",
-        component: Profile
-      },
-      {
         path: "notifications",
         name: "notifications",
         component: Notifications
@@ -37,15 +32,20 @@ const routes = [
         component: Icons
       },
       {
-        path: "typography",
-        name: "typography",
+        path: "covid_info",
+        name: "COVID-19 정보",
         component: Typography
       },
       {
-        path: "table-list",
-        name: "table-list",
+        path: "bullet",
+        name: "건의 게시판",
         component: TableList
-      }
+      },
+      {
+        path: "profile",
+        name: "개발자 프로필",
+        component: Profile
+      },
     ]
   },
   { path: "*", component: NotFound },
