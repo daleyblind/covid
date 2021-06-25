@@ -17,10 +17,10 @@ import java.util.List;
  *
  * @since 1.0
  * @author Jang Hyun
- * @version 1.1
+ * @version 1.2
  */
 
-@CrossOrigin(origins = "http://localhost:8081")
+@CrossOrigin(origins = "http://localhost:3000")
 @RequiredArgsConstructor
 @RequestMapping("/api/dashboard")
 @RestController

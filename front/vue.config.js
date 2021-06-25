@@ -36,4 +36,7 @@ module.exports = {
     sourceMap: process.env.NODE_ENV !== 'production'
   },
   outputDir: path.resolve(__dirname, '../src/main/resources/static/dist'),
+  devServer: {
+    port: 3000
+  },
 };
