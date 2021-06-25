@@ -238,7 +238,7 @@ export default {
         },
         covid: {
           seq: 0,
-          stateDt: "20210101",
+          stateDt: '',
           decideCnt: 0,
           clearCnt: 0,
           examCnt: 0,
