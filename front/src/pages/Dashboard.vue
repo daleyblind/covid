@@ -301,7 +301,7 @@ export default {
       },
       async showCovidList() {
         let covidArray = {};
-        await this.$api("http://localhost:8080/api/dashboard", "get").then(function (data) {
+        await this.$api(this.$prefixURL + "/dashboard", "get").then(function (data) {
           covidArray = data;
         });
         this.covid = covidArray[0];

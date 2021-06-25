@@ -27,6 +27,8 @@ Vue.use(VueRouter);
 Vue.use(RouterPrefetch);
 Vue.mixin(mixins);
 
+Vue.prototype.$prefixURL = 'http://localhost:8080/api';
+
 Vue.filter("makeComma", val =>{
   return String(val).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 });

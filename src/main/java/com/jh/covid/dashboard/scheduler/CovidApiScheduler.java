@@ -104,7 +104,6 @@ public class CovidApiScheduler {
         Covid covid = new Covid();
         covid.setSeq(vo.getSeq());
         covid.setStateDt(vo.getStateDt());
-        covid.setStateTime(vo.getStateTime());
         covid.setDecideCnt(vo.getDecideCnt());
         covid.setClearCnt(vo.getClearCnt());
         covid.setExamCnt(vo.getExamCnt());
@@ -113,9 +112,6 @@ public class CovidApiScheduler {
         covid.setResultNegCnt(vo.getResutlNegCnt());
         covid.setAccExamCnt(vo.getAccExamCnt());
         covid.setAccExamCompCnt(vo.getAccExamCompCnt());
-        covid.setAccDefRate(vo.getAccDefRate());
-        covid.setCreateDt(vo.getCreateDt());
-        covid.setUpdateDt(vo.getUpdateDt());
         covidRepository.save(covid);
     }
 

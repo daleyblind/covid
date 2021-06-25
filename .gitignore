@@ -36,3 +36,4 @@ build/
 /src/test/
 ### application.properties 제외 ###
 /src/main/resources/*.properties
+/src/main/resources/static/dist/
