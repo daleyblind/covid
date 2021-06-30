@@ -7,6 +7,8 @@ const Dashboard = () => import(/* webpackChunkName: "dashboard" */"@/pages/Dashb
 const Typography = () => import(/* webpackChunkName: "common" */ "@/pages/Typography.vue");
 const TableList = () => import(/* webpackChunkName: "common" */ "@/pages/TableList.vue");
 const Profile = () => import(/* webpackChunkName: "common" */ "@/pages/Profile.vue");
+const Bullet = () => import(/* webpackChunkName: "common" */ "@/pages/Bullet");
+const Write = () => import(/* webpackChunkName: "common" */ "@/pages/Write");
 
 const routes = [
   {
@@ -33,6 +35,16 @@ const routes = [
         path: "profile",
         name: "개발자 프로필",
         component: Profile
+      },
+      {
+        path: "bullet/:no",
+        name: "상세 페이지",
+        component: Bullet
+      },
+      {
+        path: "write",
+        name: "Write",
+        component: Write
       },
     ]
   },
