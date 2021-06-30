@@ -187,3 +187,33 @@ table.tablesorter thead tr .headerSortDown {
     font-size: 10px;
   }
 }
+
+.pagination {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  justify-content: center;
+  padding-left: 0;
+  list-style: none;
+  border-radius: .25rem;
+}
+
+.pagination li a {
+  position: relative;
+  display: block;
+  padding: .5rem .75rem;
+  margin-left: -1px;
+  line-height: 1.25;
+  color: white;
+  background-color: #32325d;
+  border: 1px solid #344675;
+}
+
+.pagination .page-item.active a {
+  background-color: #344675;
+  color: #fd5d93;
+}
+
+.pagination .page-item.disabled a {
+  cursor: not-allowed;
+}
