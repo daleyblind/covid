@@ -22,12 +22,14 @@ import BlackDashboard from "./plugins/blackDashboard";
 import i18n from "./i18n"
 import './registerServiceWorker'
 import mixins from "./mixins";
+import FormatDate from "./plugins/formatDate"
 Vue.use(BlackDashboard);
 Vue.use(VueRouter);
 Vue.use(RouterPrefetch);
 Vue.mixin(mixins);
 
 Vue.prototype.$prefixURL = 'http://localhost/api';
+Vue.prototype.$formatDate = FormatDate;
 
 Vue.filter("makeComma", val =>{
   return String(val).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
