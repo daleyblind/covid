@@ -26,7 +26,7 @@ import java.util.Arrays;
  *
  * @since 1.0
  * @author Jang Hyun
- * @version 1.0
+ * @version 1.1
  */
 
 @Log
@@ -68,9 +68,10 @@ public class CovidApiScheduler {
         try (AutoCloseable ignored = conn::disconnect) {
             conn.setRequestMethod("GET");
             conn.setRequestProperty("Content-type", "application/json");
-            log.info("응답 코드: " + conn.getResponseCode());
+            int responseCode = conn.getResponseCode();
+            log.info("응답 코드: " + responseCode);
             BufferedReader rd;
-            if (conn.getResponseCode() >= 200 && conn.getResponseCode() <= 300) {
+            if (responseCode >= 200 && responseCode <= 300) {
                 rd = new BufferedReader(new InputStreamReader(conn.getInputStream()));
             } else {
                 rd = new BufferedReader(new InputStreamReader(conn.getErrorStream()));
