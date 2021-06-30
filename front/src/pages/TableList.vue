@@ -3,88 +3,65 @@
       <div class="col-12">
         <card :title="bullet.title">
           <div class="table-responsive">
-            <base-table :data="bullet.data"
-                        :columns="bullet.columns"
-                        thead-classes="text-primary">
-            </base-table>
+            <table class="table tablesorter">
+              <thead class="text-primary">
+                <tr>
+                  <th v-for="column in bullet.columns">{{column}}</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-for="bullet in bullet.data">
+                  <td>{{bullet.no}}</td>
+                  <td><router-link :to="`/bullet/${bullet.no}`">{{bullet.title}}</router-link></td>
+                  <td>{{bullet.writer}}</td>
+                  <td>{{$formatDate(bullet.create)}}</td>
+                  <td>{{$formatDate(bullet.update)}}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="float-right">
+            <router-link :to="`/write`">
+              <base-button class="animation-on-hover" type="info">Write</base-button>
+            </router-link>
           </div>
         </card>
       </div>
-
     </div>
 </template>
 <script>
-import { BaseTable } from "@/components";
-const tableColumns = ["no", "title", "writer", "create", "update"];
-const tableData = [
-  {
-    no: 1,
-    title: "Oud-Turnhout",
-    writer: "Dakota Rice",
-    create: "$36.738",
-    update: "Niger",
-  },
-  {
-    no: 2,
-    title: "Sinaai-Waas",
-    writer: "Minerva Hooper",
-    create: "$23,789",
-    update: "Curaçao",
-  },
-  {
-    no: 3,
-    title: "Baileux",
-    writer: "Sage Rodriguez",
-    create: "$56,142",
-    update: "Netherlands",
-  },
-  {
-    no: 4,
-    title: "Overland Park",
-    writer: "Philip Chaney",
-    create: "$38,735",
-    update: "Korea, South",
-  },
-  {
-    no: 5,
-    title: "Feldkirchen in Kärnten",
-    writer: "Doris Greene",
-    create: "$63,542",
-    update: "Malawi",
-  },
-  {
-    no: 6,
-    title: 'Gloucester',
-    writer: 'Mason Porter',
-    create: '$98,615',
-    update: 'Chile',
-  },
-  {
-    no: 7,
-    title: 'Gloucester',
-    writer: 'Jon Porter',
-    create: '$78,615',
-    update: 'Portugal',
-  }
-];
+import Bullet from "@/pages/Bullet";
 
 export default {
   components: {
-    BaseTable
+    Bullet
   },
   data() {
     return {
       bullet: {
         title: "건의 게시판",
-        columns: [...tableColumns],
-        data: [...tableData]
+        columns: ["NO", "TITLE", "WRITER", "CREATE", "UPDATE"],
+        data: [{
+          no: 0,
+          title: '',
+          writer: '',
+          create: '',
+          update: '',
+        }]
       },
     };
-  }
+  },
+  methods: {
+    async findBulletList() {
+      await this.$api(this.$prefixURL + "/bullet", "get").then(response => {
+        this.bullet.data = response;
+      });
+    },
+  },
+  created() {
+    this.findBulletList();
+  },
 };
 </script>
 <style>
-.table-responsive {
-  overflow: hidden;
-}
 </style>
