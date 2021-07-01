@@ -26,7 +26,7 @@ import java.util.Arrays;
  *
  * @since 1.0
  * @author Jang Hyun
- * @version 1.2
+ * @version 1.3
  */
 
 @Log
@@ -58,19 +58,19 @@ public class CovidApiScheduler {
      * 특정 시간마다 공공데이터 API 통신으로 XML 데이터를 받아오는 메서드.
      * 데이터는 코로나 관련 정보를 담고 있음. ex) 확진자 수, 자가격리 수 등등
      *
-     * @throws IOException 공공데이터 API URL 이 연결되지 않으면 발생.
-     * @since 1.2
+     * @since 1.3
      */
     @Scheduled(cron = "0 0/30 9-18 * * *")
-    private void transferCovidAPI() throws IOException {
-        URL url = new URL(makeFullUrlString());
-        HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-        try (AutoCloseable ignored = conn::disconnect) {
+    private void transferCovidAPI() {
+        HttpURLConnection conn = null;
+        BufferedReader rd = null;
+        try {
+            URL url = new URL(makeFullUrlString());
+            conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod("GET");
             conn.setRequestProperty("Content-type", "application/json");
             int responseCode = conn.getResponseCode();
             log.info("응답 코드: " + responseCode);
-            BufferedReader rd;
             if (responseCode >= 200 && responseCode <= 300) {
                 rd = new BufferedReader(new InputStreamReader(conn.getInputStream()));
             } else {
@@ -81,8 +81,6 @@ public class CovidApiScheduler {
             while ((line = rd.readLine()) != null) {
                 sb.append(line);
             }
-            rd.close();
-
             String xmlString = sb.toString();
             CovidXmlTagVO vo = parsingToObjectFromXmlString(xmlString);
             if (vo == null) {
@@ -92,6 +90,17 @@ public class CovidApiScheduler {
             saveCovid(vo);
         } catch (Exception e) {
             e.printStackTrace();
+        } finally {
+            if (conn != null) {
+                conn.disconnect();
+            }
+            if (rd != null) {
+                try {
+                    rd.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
         }
     }
 
