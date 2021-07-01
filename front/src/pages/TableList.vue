@@ -19,6 +19,17 @@
                 </tr>
               </tbody>
             </table>
+            <paginate
+              v-model="page"
+              :page-count="totalPage"
+              :page-range="3"
+              :margin-pages="2"
+              :click-handler="findBulletList"
+              :prev-text="'이전'"
+              :next-text="'다음'"
+              :container-class="'pagination'"
+              :page-class="'page-item'">
+            </paginate>
           </div>
           <div class="float-right">
             <router-link :to="`/write`">
@@ -31,13 +42,17 @@
 </template>
 <script>
 import Bullet from "@/pages/Bullet";
+import Paginate from "vuejs-paginate";
 
 export default {
   components: {
-    Bullet
+    Bullet,
+    Paginate
   },
   data() {
     return {
+      page: 1,
+      totalPage: 1,
       bullet: {
         title: "건의 게시판",
         columns: ["NO", "TITLE", "WRITER", "CREATE", "UPDATE"],
@@ -52,14 +67,15 @@ export default {
     };
   },
   methods: {
-    async findBulletList() {
-      await this.$api(this.$prefixURL + "/bullet", "get").then(response => {
-        this.bullet.data = response;
+    async findBulletList(pageNum) {
+      await this.$api(this.$prefixURL + "/bullet?page="+pageNum, "get").then(response => {
+        this.totalPage = response.total;
+        this.bullet.data = response.content;
       });
     },
   },
   created() {
-    this.findBulletList();
+    this.findBulletList(this.page);
   },
 };
 </script>
