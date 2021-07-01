@@ -26,7 +26,7 @@ import java.util.Arrays;
  *
  * @since 1.0
  * @author Jang Hyun
- * @version 1.1
+ * @version 1.2
  */
 
 @Log
@@ -59,9 +59,9 @@ public class CovidApiScheduler {
      * 데이터는 코로나 관련 정보를 담고 있음. ex) 확진자 수, 자가격리 수 등등
      *
      * @throws IOException 공공데이터 API URL 이 연결되지 않으면 발생.
-     * @since 1.0
+     * @since 1.2
      */
-    @Scheduled(cron = "0 0 9-18 * * *")
+    @Scheduled(cron = "0 0/30 9-18 * * *")
     private void transferCovidAPI() throws IOException {
         URL url = new URL(makeFullUrlString());
         HttpURLConnection conn = (HttpURLConnection) url.openConnection();
