@@ -81,7 +81,13 @@ export default {
     },
     async modifyBullet() {
       if (!this.isNotModifying) {
-        if (!this.isEmptyValue(this.bullet)) return;
+        if (!this.isEmptyValue(this.bullet)) {
+          this.$notify({
+            type: 'info',
+            message: '모든 칸을 입력해 주시길 바랍니다',
+          });
+          return;
+        }
         await this.$api(this.$prefixURL + "/bullet", "put", this.bullet).then(response => {
           if (response === true) {
             this.$router.push({name: '건의 게시판'});
