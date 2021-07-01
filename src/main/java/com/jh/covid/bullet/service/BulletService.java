@@ -40,6 +40,13 @@ public class BulletService {
         return pageDTO;
     }
 
+    /**
+     * 게시글의 상세 페이지를 가져오는 메서드.
+     *
+     * @param no 게시글 번호
+     * @return 해당 게시글 VO
+     * @since 1.1
+     */
     public BulletVO findBullet(Long no) {
         return queryRepository.findBullet(no);
     }
@@ -47,7 +54,7 @@ public class BulletService {
     /**
      * 게시글 추가 메서드.
      *
-     * @param vo 게시글 번호
+     * @param vo 게시글 VO
      * @return 게시글이 추가됐는지 확인하는 boolean
      * @since 1.1
      */
