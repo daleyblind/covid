@@ -1,4 +1,5 @@
 export default function (dateString) {
+  if (dateString === '' || dateString === undefined) return;
   const nowDate = new Date(dateString);
   let formatAddZeroLessTen = v => {
     let result;
