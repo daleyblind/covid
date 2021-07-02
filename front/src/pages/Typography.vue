@@ -7,7 +7,7 @@
           <h3 class="card-title">COVID-19 정보</h3>
         </div>
         <div class="card-body">
-          <div>
+          <div class="table-responsive" style="overflow: auto">
             <table id="data_table">
               <caption>
                 <span class="hdn">코로나바이러스감염증-19 기본정보표 - 병원체, 전파 경로, 잠복기, 진단 기준, 증상, 치료, 치명률, 예방으로 구성</span>

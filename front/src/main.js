@@ -28,8 +28,8 @@ Vue.use(VueRouter);
 Vue.use(RouterPrefetch);
 Vue.mixin(mixins);
 
-// Vue.prototype.$prefixURL = 'http://13.124.138.102:8080/api';
-Vue.prototype.$prefixURL = 'http://localhost/api';
+Vue.prototype.$prefixURL = 'http://13.124.138.102/api';
+// Vue.prototype.$prefixURL = 'http://localhost/api';
 Vue.prototype.$formatDate = FormatDate;
 
 Vue.filter("makeComma", val =>{
