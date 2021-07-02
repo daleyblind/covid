@@ -3,6 +3,16 @@
        :class="{'bg-white': showMenu, 'navbar-transparent': !showMenu}">
     <div class="container-fluid">
       <div class="navbar-wrapper">
+        <div class="navbar-toggle d-inline" :class="{toggled: $sidebar.showSidebar}">
+          <button type="button"
+                  class="navbar-toggler"
+                  aria-label="Navbar toggle button"
+                  @click="toggleSidebar">
+            <span class="navbar-toggler-bar bar1"></span>
+            <span class="navbar-toggler-bar bar2"></span>
+            <span class="navbar-toggler-bar bar3"></span>
+          </button>
+        </div>
         <a class="navbar-brand" style="color: white">{{routeName}}</a>
       </div>
       <collapse-transition>
@@ -61,6 +71,12 @@ export default {
   methods: {
     capitalizeFirstLetter(string) {
       return string.charAt(0).toUpperCase() + string.slice(1);
+    },
+    toggleSidebar() {
+      this.$sidebar.displaySidebar(!this.$sidebar.showSidebar);
+    },
+    hideSidebar() {
+      this.$sidebar.displaySidebar(false);
     },
     toggleMenu() {
       this.showMenu = !this.showMenu;
