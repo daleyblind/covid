@@ -26,7 +26,7 @@ import java.util.Arrays;
  *
  * @since 1.0
  * @author Jang Hyun
- * @version 1.3
+ * @version 1.4
  */
 
 @Log
@@ -58,9 +58,9 @@ public class CovidApiScheduler {
      * 특정 시간마다 공공데이터 API 통신으로 XML 데이터를 받아오는 메서드.
      * 데이터는 코로나 관련 정보를 담고 있음. ex) 확진자 수, 자가격리 수 등등
      *
-     * @since 1.3
+     * @since 1.4
      */
-    @Scheduled(cron = "0 0/30 9-18 * * *")
+    @Scheduled(cron = "0 0/5 9-18 * * *")
     private void transferCovidAPI() {
         HttpURLConnection conn = null;
         BufferedReader rd = null;
