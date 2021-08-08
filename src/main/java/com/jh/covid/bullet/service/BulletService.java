@@ -60,6 +60,7 @@ public class BulletService {
      */
     @Transactional
     public boolean insertBullet(BulletVO vo) {
+        if (repository.count() > 5000) return false;    // 해커의 무작위 공격 방지를 위해 작성. 스프링 시큐리티나 OAuth2 를 적용하면 반드시 삭제!
         Bullet bullet = new Bullet();
         bullet.setTitle(vo.getTitle());
         bullet.setWriter(vo.getWriter());

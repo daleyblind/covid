@@ -61,6 +61,11 @@ export default {
       await this.$api(this.$prefixURL + "/bullet", "post", this.bullet).then(response => {
         if (response === true) {
           this.$router.push('bullet');
+        } else {
+          this.$notify({
+            type: 'info',
+            message: '건의 게시판은 현재 개발 단계에 있습니다.<br/>이용에 불편을 드려서 죄송합니다.',
+          });
         }
       });
     },
